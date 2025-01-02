@@ -69,18 +69,7 @@ const Message = () => {
       image: moreen,
       time: "1h",
     },
-    {
-      name: "Stanley Padyera",
-      message: "Can we meet at 7pm?",
-      image: dad,
-      time: "1h 25m",
-    },
-    {
-      name: "Lyness Mkandawire",
-      message: "You have to pay the money before friday",
-      image: masten,
-      time: "7h 37m",
-    },
+   
   ];
   return (
     <div className="w-[45%] p-2 border-r-2 font-mono space-y-4">
@@ -97,8 +86,12 @@ const Message = () => {
         className="w-full bg-[#f3f3f3] h-12 rounded-lg text-center"
       />
 
-      {people.map((person) => (
-        <div className="flex cursor-pointer">
+      {people.map((person, index) => (
+        <div
+          className={
+            index === 0 ? "flex cursor-pointer bg-[#f3f3f3] p-2 rounded-md" : "flex cursor-pointer"
+          }
+        >
           <img src={person.image} alt="" className="w-12 h-12 rounded-md" />
           <div className="px-4">
             <p>{person.name}</p>
