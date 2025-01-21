@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom"
 
 const Signup = () => {
+  const navigate = useNavigate()
   // data from user in the signup form
   const [email, setemail] = useState("");
   const [fname, setfname] = useState("");
@@ -39,7 +41,6 @@ const Signup = () => {
   };
 
   const handlesubmit = async (e) => {
-    
     e.preventDefault();
     const response = await fetch("http://localhost:5000/auth/signup", {
       method: "POST",
@@ -49,7 +50,9 @@ const Signup = () => {
       body: JSON.stringify(signupdata),
     })
     const data = await response.json()
-    console.log(data);
+    if (data){
+      navigate('/login')
+    }
     
   };
 
