@@ -17,6 +17,5 @@ export class CreateDto {
   username: string;
 
   @IsString()
-  @Exclude()
   password: string;
 }
