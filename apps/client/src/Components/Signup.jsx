@@ -1,9 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Signup = () => {
+  // data from user in the signup form
+  const [email, setemail] = useState("");
+  const [fname, setfname] = useState("");
+  const [lname, setlname] = useState("");
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
+
+  // handle provided data by the user
+  const handleemail = (e) => {
+    setemail(e.target.value);
+  };
+
+  const handlefname = (e) => {
+    setfname(e.target.value);
+  };
+
+  const handlelname = (e) => {
+    setlname(e.target.value);
+  };
+
+  const handleusername = (e) => {
+    setusername(e.target.value);
+  };
+
+  const handlepassword = (e) => {
+    setpassword(e.target.value);
+  };
+
+  // test if it works
+  const signupdata = {
+    email: email,
+    firstname: fname,
+    lastname: lname,
+    username: username,
+    password: password,
+  };
+
+  const handlesubmit = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:5000/auth/signup", {
+      method: "POST",
+      headers: "Content-Type: application/json",
+      body: JSON.stringify(signupdata),
+
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+
   return (
     <div className="w-full h-screen flex justify-center items-center bg-gray-100">
-      <form className="w-96 p-8 bg-white rounded-lg shadow-lg space-y-4">
+      <form
+        className="w-96 p-8 bg-white rounded-lg shadow-lg space-y-4"
+        onSubmit={handlesubmit}
+      >
         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
 
         <div>
@@ -19,6 +71,8 @@ const Signup = () => {
             name="email"
             className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
+            required
+            onChange={handleemail}
           />
         </div>
 
@@ -32,9 +86,11 @@ const Signup = () => {
           <input
             type="text"
             id="firstName"
-            name="firstName"
+            name="firstname"
             className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your first name"
+            required
+            onChange={handlefname}
           />
         </div>
 
@@ -51,6 +107,8 @@ const Signup = () => {
             name="lastName"
             className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your last name"
+            required
+            onChange={handlelname}
           />
         </div>
 
@@ -67,6 +125,8 @@ const Signup = () => {
             name="username"
             className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Choose a username"
+            required
+            onChange={handleusername}
           />
         </div>
 
@@ -83,6 +143,8 @@ const Signup = () => {
             name="password"
             className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Choose a password"
+            required
+            onChange={handlepassword}
           />
         </div>
 
