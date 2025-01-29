@@ -38,16 +38,19 @@ const Signup = () => {
     password: password,
   };
 
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
+    
     e.preventDefault();
-    fetch("http://localhost:5000/auth/signup", {
+    const response = await fetch("http://localhost:5000/auth/signup", {
       method: "POST",
-      headers: "Content-Type: application/json",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(signupdata),
-
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    const data = await response.json()
+    console.log(data);
+    
   };
 
   return (
