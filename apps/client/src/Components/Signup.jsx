@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [error, seterror] = useState("");
   // data from user in the signup form
   const [email, setemail] = useState("");
   const [fname, setfname] = useState("");
@@ -42,22 +44,29 @@ const Signup = () => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(signupdata),
-    })
-    const data = await response.json()
-    if (data){
-      navigate('/login')
+    seterror("");
+    try {
+      const response = await fetch("http://localhost:5000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupdata),
+      });
+      if (!response.ok) {
+        throw new Error("Email already in use");
+      }
+      navigate("/login");
+    } catch (err) {
+      seterror(err.message);
+      setTimeout(() => {
+        seterror("");
+      }, 2000);
     }
-    
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-gray-100">
+    <div className="w-full h-screen flex justify-center items-center bg-gray-100 font-mono">
       <form
         className="w-96 p-8 bg-white rounded-lg shadow-lg space-y-4"
         onSubmit={handlesubmit}
@@ -65,10 +74,7 @@ const Signup = () => {
         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
 
         <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="email" className="">
             Email
           </label>
           <input
@@ -83,10 +89,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="firstName"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="firstName" className="">
             First Name
           </label>
           <input
@@ -101,10 +104,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="lastName"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="lastName" className="">
             Last Name
           </label>
           <input
@@ -119,10 +119,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="username"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="username" className="">
             Username
           </label>
           <input
@@ -137,10 +134,7 @@ const Signup = () => {
         </div>
 
         <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="password" className="">
             Password
           </label>
           <input
@@ -160,6 +154,7 @@ const Signup = () => {
         >
           Sign Up
         </button>
+        {error && <p className=" text-center w-full text-red-700">{error}</p>}
       </form>
     </div>
   );
