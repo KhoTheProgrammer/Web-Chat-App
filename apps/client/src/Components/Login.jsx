@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,61 +35,67 @@ const Login = () => {
       if (!response.ok) {
         throw new Error("Invalid credentials");
       }
+      // users data
+      const data = response.json();
+      console.log(data);
       navigate("/home");
     } catch (err) {
       seterror(err.message);
+      setTimeout(() => {
+        seterror("");
+      }, 2000);
     }
-
-    return (
-      <div className="w-full h-screen flex justify-center items-center bg-gray-100">
-        <form
-          className="w-96 p-8 bg-white rounded-lg shadow-lg space-y-4"
-          onSubmit={handlesubmit}
-        >
-          <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter username"
-              onChange={handleusername}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter password"
-              onChange={handlepassword}
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-2 mt-4 bg-[#615ef0] text-white rounded-md shadow-lg hover:bg-[#4d51d6] focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Login
-          </button>
-          {error && <p className=" text-center w-full">{error}</p>}
-        </form>
-      </div>
-    );
   };
+
+  return (
+    <div className="w-full h-screen flex justify-center items-center bg-gray-100 font-mono">
+      <form
+        className="w-96 p-8 bg-white rounded-lg shadow-lg space-y-4"
+        onSubmit={handlesubmit}
+      >
+        <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
+        <div>
+          <label htmlFor="username" className="">
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter username"
+            onChange={handleusername}
+          />
+        </div>
+        <div>
+          <label htmlFor="password" className="">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter password"
+            onChange={handlepassword}
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full py-2 mt-4 bg-[#615ef0] text-white rounded-md shadow-lg hover:bg-[#4d51d6] focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Login
+        </button>
+        <p className=" font-semibold">
+          Need an account?{" "}
+          <span className=" text-[#615ef0]">
+            <NavLink to="/signup">Sign Up</NavLink>
+          </span>
+        </p>
+        {error && <p className=" text-center w-full text-red-700">{error}</p>}
+      </form>
+    </div>
+  );
 };
 
 export default Login;
