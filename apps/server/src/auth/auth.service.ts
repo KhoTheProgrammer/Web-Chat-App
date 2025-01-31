@@ -19,15 +19,28 @@ export class AuthService {
     return user;
   }
 
-  async login(logindata: LoginDto) {
-    const user = await this.userservice.getUserByUsername(logindata.username);
+  async login(username: string, password: string) {
+    const user = await this.userservice.getUserByUsername(username);
     if (user) {
-      const hash = await bcrypt.compare(logindata.password, user.password);
+      const hash = await bcrypt.compare(password, user.password);
       if (hash) {
         return user;
       }
       throw new HttpException('incorrect credentials', HttpStatus.NOT_FOUND);
     }
     throw new HttpException('incorrect credentials', HttpStatus.NOT_FOUND);
+  }
+
+  async validateUser(username: string, password: string) {
+    try {
+      const user = await this.userservice.getUserByUsername(username);
+      const hash = await bcrypt.compare(password, user.password);
+      if (hash) {
+        return user;
+      }
+      throw new HttpException('Incorrect credentials', HttpStatus.NOT_FOUND);
+    } catch (error) {
+      throw new HttpException('incorrect credentials', HttpStatus.NOT_FOUND);
+    }
   }
 }
